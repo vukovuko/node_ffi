@@ -1,27 +1,27 @@
-CC = g++
-# In order to compile node addons, you need to have node installed or add the path to the node include folder to the environment variable NODE_INCLUDE_PATH
-NODE_INCLUDE_PATH := $(shell node -p "require('path').resolve(process.execPath, '..', '..', 'include', 'node')")
-CCFLAGS = -std=c++2b -g -O3 -fPIC -shared -fsanitize=undefined -Wall -Wextra -Wpedantic -pedantic-errors -Wno-unused-variable -Wno-unused-parameter -Wfatal-errors -I$(NODE_INCLUDE_PATH)
-# The output must be a .node file
+CXX = g++
 TARGET = addon.node
+SOURCES = main.cpp
 
-.PHONY: all clean run debug rebuild
+RAYLIB_PATH := $(HOME)/vuko/projects/raylib-5.5_linux_amd64
+NODE_INCLUDE_PATH := $(shell node -p "require('path').resolve(process.execPath, '..', '..', 'include', 'node')")
+
+CXXFLAGS = -std=c++23 -g -fPIC -shared \
+           -I$(RAYLIB_PATH)/include \
+           -I$(NODE_INCLUDE_PATH) \
+           -Wall -Wextra
+
+LIBS = $(RAYLIB_PATH)/lib/libraylib.a \
+
+.PHONY: all clean run
 
 all: $(TARGET)
 
-$(TARGET): main.o
-	$(CC) $(CCFLAGS) -o $(TARGET) main.o
+$(TARGET): $(SOURCES)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
 
-main.o: main.cpp
-	$(CC) $(CCFLAGS) -c main.cpp
-
-run: $(TARGET)
+run: all
 	node index.js
 
-debug: $(TARGET)
-	gdb $(TARGET)
-
-rebuild: clean all
-
 clean:
-	rm -rf $(TARGET) *.o
+	rm -f $(TARGET)
+
