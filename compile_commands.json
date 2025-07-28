@@ -1,0 +1,24 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++2b",
+      "-g",
+      "-O3",
+      "-fsanitize=undefined",
+      "-fsanitize=address",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-pedantic-errors",
+      "-Wno-unused-variable",
+      "-Wno-unused-parameter",
+      "-Wfatal-errors",
+      "-I/home/vuko/.nvm/versions/node/v20.18.0/include/node",
+      "-c",
+      "main.cpp"
+    ],
+    "directory": "/home/vuko/vuko/projects/node_addon",
+    "file": "/home/vuko/vuko/projects/node_addon/main.cpp"
+  }
+]
